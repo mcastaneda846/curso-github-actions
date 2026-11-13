@@ -1,0 +1,58 @@
+
+name: Expressions
+run-name:  Practice GitHub Actions Expressions
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+      - bugfix/**
+      - hotfix/**
+
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+jobs:
+
+  # EXPRESION 1: Comparar la rama actual
+  check-main-branch:
+    name: Check Main Branch
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Confirm main branch
+        run: echo "The workflow is running on main."
+
+  # EXPRESION 2: Identificar Pull Requests de feature
+  check-feature-branch:
+    name: Check Feature Branch
+    runs-on: ubuntu-latest
+
+    if: >
+      github.event_name == 'pull_request' &&
+      startsWith(github.head_ref, 'feature/')
+
+    steps:
+      - name: Confirm feature branch
+        run: echo "Pull Request from a feature branch detected."
+
+  # EXPRESION 3: Identificar ramas no permitidas
+  check-invalid-branch:
+    name: Check Invalid Branch
+    runs-on: ubuntu-latest
+
+    if: >
+      github.event_name == 'pull_request' &&
+      !startsWith(github.head_ref, 'feature/') &&
+      !startsWith(github.head_ref, 'bugfix/')
+
+    steps:
+      - name: Report invalid branch
+        run: |
+          echo "Invalid branch naming convention."
+          echo "Allowed prefixes: feature/ and bugfix/"
