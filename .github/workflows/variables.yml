@@ -1,0 +1,15 @@
+name: Variables
+run-name: ¡Estoy aprendiendo Variables!
+on: push
+env: 
+  DIA_DE_LA_SEMANA: Sábado
+jobs: 
+  saludar_variable:
+    runs-on: ubuntu-latest
+    env:
+      SALUDO: Hola
+    steps:
+      - name: Saludar
+        run: echo "$SALUDO, ${{vars.NOMBRE}}, hoy es ${{env.DIA_DE_LA_SEMANA}}"
+      
+    

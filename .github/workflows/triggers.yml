@@ -1,0 +1,32 @@
+name: Triggers
+
+on:
+  push:
+    branches: 
+      - "main"
+      - "aprendiendo-github-actions"
+  pull_request:
+    types: ["opened", "labeled"]
+    branches: [ "main" ]
+
+  issue_comment: 
+    types: ["created", "edited"]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar main.ts
+        run: npx tsx main.ts
